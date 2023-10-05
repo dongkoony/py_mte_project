@@ -1,0 +1,7 @@
+resource "aws_instance" "extracted_instance" {
+  ami           = "ami-0c55b159cbfafe1f0"  # 예시 AMI ID
+  instance_type = "{{ cpu_model }}"
+  tags = {
+    Name = "{{ os_name }}"
+  }
+}
