@@ -1,7 +1,14 @@
 import paramiko
 import json
 import os
+import boto3
 from jinja2 import Environment, FileSystemLoader
+
+# S3 bucket Auto Save
+def save_data_to_s3(data, bucket_name, s3_key):
+    s3 = boto3.client('s3')
+    formatted_data = json.dumps(data, indent=4)
+    s3.put_object(Body=formatted_data, Bucket=bucket_name, Key=s3_key)
 
 # 템플릿 디렉터리 설정
 TEMPLATE_DIR = r"C:\project\MTE-Project\backend\templates"
@@ -60,19 +67,28 @@ def get_server_info(host, port, username, password=None, key_path=None):
     return result
 
 def get_terraform_template(host_info):
-    # 템플릿 파일 확인
-    template_path = os.path.join(TEMPLATE_DIR, 'ec2_template.tf.j2')
-    if not os.path.exists(template_path):
-        raise Exception(f"템플릿 파일이 {template_path} 에 없습니다.")
-
+    """
+    주어진 호스트 정보를 사용하여 Jinja2 템플릿을 렌더링하고 테라폼 코드를 반환한다.
+    
+    Args:
+    - host_info (dict): 호스트의 OS, CPU 등의 정보가 포함된 딕셔너리
+    
+    Returns:
+    - str: 렌더링된 테라폼 코드
+    """
     # 템플릿 불러오기
-    template = env.get_template('ec2_template.tf.j2')
+    try:
+        template = env.get_template('ec2_template.tf.j2')
+    except Exception as e:
+        raise Exception(f"템플릿 파일 로딩 중 오류 발생: {str(e)}")
 
-    # 필요한 데이터 추출 및 변환
-    data_extracted = {
-        "os_name": host_info["OS"].split()[0],  # OS 이름
-        "cpu_model": host_info["CPU"]["Model name"]  # CPU 모델 이름
-    }
+    # 필요한 데이터 추출하기
+    cpu_model = host_info.get("CPU", {}).get("Model name", "t2.micro")  # default to t2.micro if not found
+    os_name = host_info.get("OS", "").split()[0]  # OS 이름
 
-    # 템플릿 적용 및 반환
-    return template.render(data_extracted)
+    # 아래의 코드는 host_info의 내용을 확인하기 위한 코드입니다.
+    # 실제 배포나 실행에서는 제거해야 합니다.
+    print("Host Info:", host_info)
+
+    # 템플릿 적용하고 반환하기
+    return template.render(cpu_model=cpu_model, os_name=os_name)

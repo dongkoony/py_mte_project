@@ -93,6 +93,11 @@ class LinuxServerInfoGUI(QWidget):
         try:
             host_info = ssh_linux.get_server_info(host, port, username, password, key_path)
             
+            # 추출한 정보를 S3에 저장하기
+            s3_bucket_name = "mte-project"
+            s3_key_path = f"json(terraform)/{host}_info.json"  # 예: json(terraform)/192.168.1.1_info.json
+            ssh_linux.save_data_to_s3(host_info, s3_bucket_name, s3_key_path)
+
             # Jinja2 템플릿 적용
             env = Environment(loader=FileSystemLoader(ssh_linux.TEMPLATE_DIR))
             template = env.get_template('ec2_template.tf.j2')
