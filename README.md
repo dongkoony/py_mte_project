@@ -20,42 +20,31 @@ Json 포멧을 S3 Bucket에 Auto Save 하며, IaC Terraform 다운로드 누를 
 
 ## Directory Drawing
 ```
-├─backend
-│  ├─static           # 백엔드와 관련된 정적 파일들 저장
-│  ├─models           # 데이터베이스 모델 또는 데이터 처리 관련 코드
-│  ├─views            # 애플리케이션의 뷰 함수나 API 엔드포인트 코드
-│  ├─utils            # 유틸리티 및 보조 함수
-│  ├─templates        # 템플릿 파일 (Jinja2 등의 템플릿 엔진을 사용할 경우)
-│  └─__pycache__
-
-├─frontend/
+ProjectRoot/
 │
-│├─public/              <-- 정적 파일들 (index.html, favicon, etc.)
+├─backend/
+│  ├─static/           # 백엔드와 관련된 정적 파일들 저장
+│  ├─models/           # 데이터베이스 모델 또는 데이터 처리 관련 코드
+│  ├─views/            # 애플리케이션의 뷰 함수나 API 엔드포인트 코드
+│  ├─utils/            # 유틸리티 및 보조 함수
+│  ├─templates/        # 템플릿 파일 (Jinja2 등의 템플릿 엔진을 사용할 경우)
+│  └─__pycache__/
 │
-│├─src/
-││  ├─assets/           <-- 이미지, 스타일, 폰트 등의 리소스
-││  │
-││  ├─components/       <-- 재사용 가능한 React 컴포넌트들
-││  │  ├─Button/
-││  │  ├─Navbar/
-││  │  └─...
-││  │
-││  ├─pages/            <-- 각 페이지의 메인 컴포넌트들
-││  │  ├─Login/
-││  │  ├─Register/
-││  │  ├─Dashboard/
-││  │  └─MyPage/
-││  │
-││  ├─api/              <-- API 호출 관련 함수나 설정
-││  │
-││  ├─utils/            <-- 유틸리티 함수나 공통 로직
-││  │
-││  ├─App.js            <-- 메인 App 컴포넌트
-││  └─index.js          <-- React 앱의 시작점
-││
-├─.gitignore
-├─package.json
-└─README.md
+└─frontend/
+   ├─public/              # 정적 파일들 (index.html, favicon, etc.)
+   │
+   ├─src/
+   │  ├─assets/           # 이미지, 스타일, 폰트 등의 리소스
+   │  ├─components/       # 재사용 가능한 React 컴포넌트들
+   │  ├─pages/            # 각 페이지의 메인 컴포넌트들
+   │  ├─api/              # API 호출 관련 함수나 설정
+   │  ├─utils/            # 유틸리티 함수나 공통 로직
+   │  ├─App.js            # 메인 App 컴포넌트
+   │  └─index.js          # React 앱의 시작점
+   │
+   ├─.gitignore
+   ├─package.json
+   └─README.md
 
 ``` 
 
